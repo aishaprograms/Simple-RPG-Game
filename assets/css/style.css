@@ -1,0 +1,14 @@
+h1 {
+    font-family: 'Audiowide', cursive;
+    font-size: 75px;
+}
+
+h2,
+h3 {
+    font-family: 'Bungee Hairline', cursive;
+}
+
+img {
+    max-height: 125px;
+    border: 2px yellow solid;
+}
