@@ -31,70 +31,45 @@ var beast = new Character('Beast', '../images/beast.jpeg', 100, 10, 10);
 var magneto = new Character('Magneto', '../images/magneto.jpeg', 150, 15, 15);
 var phoenix = new Character('Phoenix', '../images/phoenix.jpeg', 120, 12, 12);
 var wolverine = new Character('Wolverine', '../images/wolverine.jpeg', 180, 18, 18);
-var characterArray = [];
-characterArray.push(beast);
-characterArray.push(magneto);
-characterArray.push(phoenix);
-characterArray.push(wolverine);
 var player;
 var enemy;
 
+//returns array of player ID, Character object based on figure selected
+function setFighter(characterFigure) {
+    if ($(characterFigure).is('#Beast-figure')) {
+        return ['#Beast-figure', beast];
+    } else if ($(characterFigure).is('#Magneto-figure')) {
+        return ['#Magneto-figure', magneto];
+    } else if ($(characterFigure).is('#Phoenix-figure')) {
+        return ['#Phoenix-figure', phoenix];
+    } else if ($(characterFigure).is('#Wolverine-figure')) {
+        return ['#Wolverine-figure', wolverine];
+    }
+}
+
 //DOM modifiying function using jQuery
-//activated by clicking on character image
-//moves player to fight section
+//activated by clicking on character figure
+//moves other characters to enemy section
 function selectPlayer() {
-    $('.character').on('click', function() {
+    $('.character-figure').on('click', function() {
+        player = setFighter(this);
         $('#player-instruction').html('Your Character');
-        var playerArray = setPlayer(this);
-        var playerId = playerArray[0];
-        var enemyArray = makeEnemies(playerArray[1], characterArray);
-        for (var i = 0; i < enemyArray.length; i++) {
-            $('#' + enemyArray[i].name).css('border', '2px red solid');
-        }
-        // $(this).css('border', '2px green solid');
+        $(this).css('border', '2px green solid');
+        $('.figure').not(this).css('border', '2px red solid');
+        $('.figure').not(this).insertAfter('#enemy-header');
+        $('.figure').not(this).addClass('enemy-figure').removeClass('character-figure');
+        $(this).addClass('player-figure').removeClass('character-figure');
     });
-}
-
-//returns array of player ID, Character object based on image selected
-function setPlayer(characterImg) {
-    if ($(characterImg).is('#Beast')) {
-        return ['#Beast', beast];
-    } else if ($(characterImg).is('#Magneto')) {
-        return ['#Magneto', magneto];
-    } else if ($(characterImg).is('#Phoenix')) {
-        return ['#Phoenix', phoenix];
-    } else if ($(characterImg).is('#Wolverine')) {
-        return ['#Wolverine', wolverine];
-    }
-}
-
-function findWithAttr(array, attr, value) {
-    for (var i = 0; i < array.length; i += 1) {
-        if (array[i][attr] === value) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-function makeEnemies(player, arrayCharacter) {
-    var indexPlayer;
-    if (player === beast) {
-        indexPlayer = findWithAttr(characterArray, 'name', 'Beast');
-    } else if (player === magneto) {
-        indexPlayer = findWithAttr(characterArray, 'name', 'Magneto');
-    } else if (player === phoenix) {
-        indexPlayer = findWithAttr(characterArray, 'name', 'Phoenix');
-    } else if (player === wolverine) {
-        indexPlayer = findWithAttr(characterArray, 'name', 'Wolverine');
-    }
-    return arrayCharacter.splice(indexPlayer, 1);
 }
 
 //activated by clicking on character image
 //chooses enemy
 //moves enemy to defender section
-function setEnemy() {}
+function selectEnemy() {
+    $('.enemy-figure').on('click', function() {
+        $(this).insertAfter('#defender-header');
+    });
+}
 
 //activated by attack button click
 //player attacks enemy to decrease enemy hp
@@ -110,6 +85,7 @@ function defeatedPlayer() {}
 
 function renderDom() {
     selectPlayer();
+    selectEnemy();
 }
 
 $(document).ready(function() {

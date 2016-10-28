@@ -9,11 +9,19 @@ h3 {
 }
 
 figure {
+    background: black;
+    border: 2px yellow solid;
     float: left;
-    margin-right: 10px;
+    margin: 10px;
 }
 
 img {
-    border: 2px yellow solid;
     max-height: 125px;
+}
+
+.btn {
+    clear: both;
+    display: block;
+    margin: 10px;
+    max-width: 100px;
 }
