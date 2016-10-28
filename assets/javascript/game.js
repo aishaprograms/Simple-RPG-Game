@@ -7,6 +7,7 @@ function Character(name, image, health, attack, counterAttack) {
     this.baseAttack = attack;
     this.counterAttack = counterAttack;
     this.increaseAttack = increaseAttack;
+    this.decreaseHealth = decreaseHealth;
     this.isLoser = isLoser;
 }
 
@@ -33,6 +34,8 @@ var phoenix = new Character('Phoenix', '../images/phoenix.jpeg', 120, 12, 12);
 var wolverine = new Character('Wolverine', '../images/wolverine.jpeg', 180, 18, 18);
 var player;
 var enemy;
+var playerAttackPoints;
+var enemyAttackPoints;
 
 //returns array of player ID, Character object based on figure selected
 function setFighter(characterFigure) {
@@ -48,34 +51,67 @@ function setFighter(characterFigure) {
 }
 
 //DOM modifiying function using jQuery
-//activated by clicking on character figure
-//moves other characters to enemy section
-function selectPlayer() {
+//!!!!!!!! currently keeps selecting new enemies
+function selectFighters() {
     $('.character-figure').on('click', function() {
-        player = setFighter(this);
-        $('#player-instruction').html('Your Character');
-        $(this).css('border', '2px green solid');
-        $('.figure').not(this).css('border', '2px red solid');
-        $('.figure').not(this).insertAfter('#enemy-header');
-        $('.figure').not(this).addClass('enemy-figure').removeClass('character-figure');
-        $(this).addClass('player-figure').removeClass('character-figure');
+        if (!$(this).hasClass('enemy-figure') && !$(this).hasClass('player-figure')) {
+            selectPlayer(this);
+            moveEnemies(this);
+        } else if ($(this).hasClass('enemy-figure') && !$(this).hasClass('defender-figure')) {
+            selectDefender(this);
+        }
     });
 }
 
+//activated by clicking on character figure
+//chooses player
+function selectPlayer(characterFigure) {
+    player = setFighter(characterFigure);
+    $(characterFigure).css('border', '2px green solid');
+    $('#player-instruction').html('Your Character');
+    $(characterFigure).insertAfter('#player-instruction');
+    $(characterFigure).addClass('player-figure');
+}
+
+//moves other characters to enemy section
+function moveEnemies(characterFigure) {
+    $('.character-figure').not(characterFigure).css('border', '2px red solid');
+    $('.character-figure').not(characterFigure).insertAfter('#enemy-header');
+    $('.character-figure').not(characterFigure).addClass('enemy-figure');
+}
+
+
 //activated by clicking on character image
-//chooses enemy
-//moves enemy to defender section
-function selectEnemy() {
-    $('.enemy-figure').on('click', function() {
-        $(this).insertAfter('#defender-header');
-    });
+//chooses defender
+//moves defender to defender section
+function selectDefender(characterFigure) {
+    enemy = setFighter(characterFigure);
+    $(characterFigure).insertAfter('#defender-header');
+    $(characterFigure).addClass('defender-figure');
 }
 
 //activated by attack button click
+function toggleFight() {
+    $('#attack-button').on('click', function() {
+        fightersAttack();
+        showAttackHit();
+    });
+}
+
 //player attacks enemy to decrease enemy hp
 //enemy counter attacks to decrease player hp
-function attackEnemy() {}
+function fightersAttack() {
+    playerAttackPoints = player[1].attack;
+    enemyAttackPoints = enemy[1].attack;
+    player[1].decreaseHealth(enemyAttackPoints);
+    enemy[1].decreaseHealth(playerAttackPoints);
+}
 
+function showAttackHit() {
+    $(player[0] + '-caption').html(player[1].name + ' ' + player[1].health + ' HP');
+    $(enemy[0] + '-caption').html(enemy[1].name + ' ' + enemy[1].health + ' HP');
+
+}
 
 //true when enemy is defeated
 function defeatedEnemy() {}
@@ -84,8 +120,8 @@ function defeatedEnemy() {}
 function defeatedPlayer() {}
 
 function renderDom() {
-    selectPlayer();
-    selectEnemy();
+    selectFighters();
+    toggleFight();
 }
 
 $(document).ready(function() {

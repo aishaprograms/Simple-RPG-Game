@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Audiowide|Bungee+Hairline" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="assets/javascript/game.js"></script>
 </head>
 
 <body>
@@ -15,23 +16,25 @@
         <header class="header">
             <h1>X-Men RPG</h1>
         </header>
-        <div class="row" id="players">
+        <div class="row" id="selected-player">
             <h3 id="player-instruction">Choose your player</h3>
+        </div>
+        <div class="row" id="characters">
             <figure class="figure character-figure" id="Beast-figure">
                 <img src="assets/images/beast.jpeg" class="figure-img img-fluid rounded character" alt="Beast from X-Men" id="Beast">
-                <figcaption class="figure-caption">Beast 100 HP</figcaption>
+                <figcaption class="figure-caption" id="Beast-figure-caption">Beast 100 HP</figcaption>
             </figure>
             <figure class="figure character-figure" id="Magneto-figure">
                 <img src="assets/images/magneto.jpeg" class="figure-img img-fluid rounded character" alt="Magneto from X-Men" id="Magneto">
-                <figcaption class="figure-caption">Magneto 150 HP</figcaption>
+                <figcaption class="figure-caption" id="Magneto-figure-caption">Magneto 150 HP</figcaption>
             </figure>
             <figure class="figure character-figure" id="Phoenix-figure">
                 <img src="assets/images/phoenix.jpeg" class="figure-img img-fluid rounded character" alt="Phoenix from X-Men" id="Phoenix">
-                <figcaption class="figure-caption">Phoenix 120 HP</figcaption>
+                <figcaption class="figure-caption" id="Phoenix-figure-caption">Phoenix 120 HP</figcaption>
             </figure>
             <figure class="figure character-figure" id="Wolverine-figure">
                 <img src="assets/images/wolverine.jpeg" class="figure-img img-fluid rounded character" alt="Wolverine from X-Men" id="Wolverine">
-                <figcaption class="figure-caption">Wolverine 180 HP</figcaption>
+                <figcaption class="figure-caption" id="Wolverine-figure-caption">Wolverine 180 HP</figcaption>
             </figure>
         </div>
         <div class="row" id="enemies">
@@ -39,13 +42,12 @@
         </div>
         <div class="row" id="fight-section">
             <h3 id="fight-header">Fight Section</h3>
-            <a href="#" class="btn btn-danger">Attack</a>
+            <button type="button" class="btn btn-danger" id="attack-button">Attack</button>
         </div>
         <div class="row" id="defender">
             <h3 id="defender-header">Defender</h3>
         </div>
     </div>
 </body>
-<script type="text/javascript" src="assets/javascript/game.js"></script>
 
 </html>
