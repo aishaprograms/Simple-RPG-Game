@@ -2,6 +2,7 @@
 function Character(name, image, health, attack, counterAttack) {
     this.name = name;
     this.image = image;
+    this.baseHealth = health;
     this.health = health;
     this.attack = attack;
     this.baseAttack = attack;
@@ -9,6 +10,7 @@ function Character(name, image, health, attack, counterAttack) {
     this.increaseAttack = increaseAttack;
     this.decreaseHealth = decreaseHealth;
     this.isLoser = isLoser;
+    this.resetCharacter = resetCharacter;
 }
 
 //Each time the Character attacks, their character's Attack Power increases by its base Attack Power.
@@ -26,12 +28,17 @@ function isLoser(Character) {
     return this.health <= 0;
 }
 
+function resetCharacter() {
+    this.health = this.baseHealth;
+    this.attack = this.baseAttack;
+}
+
 //new instances of Characters
 //need to change attack and counterattack
-var beast = new Character('Beast', '../images/beast.jpeg', 100, 10, 10);
+var beast = new Character('Beast', '../images/beast.jpeg', 100, 5, 5);
 var magneto = new Character('Magneto', '../images/magneto.jpeg', 150, 15, 15);
-var phoenix = new Character('Phoenix', '../images/phoenix.jpeg', 120, 12, 12);
-var wolverine = new Character('Wolverine', '../images/wolverine.jpeg', 180, 18, 18);
+var phoenix = new Character('Phoenix', '../images/phoenix.jpeg', 120, 8, 8);
+var wolverine = new Character('Wolverine', '../images/wolverine.jpeg', 180, 25, 25);
 var player;
 var enemy;
 var playerAttackPoints;
@@ -88,13 +95,24 @@ function selectDefender(characterFigure) {
     enemy = setFighter(characterFigure);
     $(characterFigure).insertAfter('#defender-header');
     $(characterFigure).addClass('defender-figure');
+    $('#play-message').html('You selected to fight ' + enemy[1].name);
 }
 
 //activated by attack button click
+//add no enemy here
 function toggleFight() {
     $('#attack-button').on('click', function() {
-        fightersAttack();
-        showAttackHit();
+        if (enemy === undefined || (defeatedEnemy() && !$('.character-figure').hasClass('defender-figure')) && !allDefeated()) {
+            $('#play-message').html('Enemy has not been selected!');
+        } else if (!defeatedPlayer()) {
+            showGamePlay();
+            fightersAttack();
+            showAttackHit();
+            gameOver();
+            defenderLost();
+        } else {
+            return;
+        }
     });
 }
 
@@ -105,6 +123,7 @@ function fightersAttack() {
     enemyAttackPoints = enemy[1].attack;
     player[1].decreaseHealth(enemyAttackPoints);
     enemy[1].decreaseHealth(playerAttackPoints);
+    player[1].increaseAttack();
 }
 
 function showAttackHit() {
@@ -113,11 +132,79 @@ function showAttackHit() {
 
 }
 
+//show enemy and player attacks
+function showGamePlay() {
+    var playerMove = player[1].name + ' attacked with ' + player[1].attack + 'HP! </br>';
+    var enemyMove = enemy[1].name + ' attacked with ' + enemy[1].attack + 'HP! </br>';
+    $('#play-message').html(playerMove + enemyMove);
+}
+
 //true when enemy is defeated
-function defeatedEnemy() {}
+function defeatedEnemy() {
+    return enemy[1].isLoser();
+}
 
 //true when player is defeated
-function defeatedPlayer() {}
+function defeatedPlayer() {
+    return player[1].isLoser();
+}
+
+//show reset
+//show gameover msg
+function gameOver() {
+    if (defeatedPlayer()) {
+        $('#play-message').html('Game over...');
+        var resetButton = '<button type="button" class="btn btn-info" id="reset-button">Reset</button>';
+        $('#reset').html(resetButton);
+        reset();
+        $('.character-figure').show();
+    }
+}
+
+function reset() {
+    $('#reset-button').on('click', function() {
+        $('#player-instruction').html('Choose a Player');
+        $('.character-figure').appendTo('#characters');
+        $('.character-figure').removeClass('player-figure enemy-figure defender-figure');
+        $('.character-figure').css('border', '2px yellow solid');
+        $('#play-message').html('');
+        $('#reset').html('');
+        beast.resetCharacter();
+        phoenix.resetCharacter();
+        magneto.resetCharacter();
+        wolverine.resetCharacter();
+        $('#' + beast.name + '-figure-caption').html(beast.name + ' ' + beast.baseHealth + ' HP');
+        $('#' + phoenix.name + '-figure-caption').html(phoenix.name + ' ' + phoenix.baseHealth + ' HP');
+        $('#' + magneto.name + '-figure-caption').html(magneto.name + ' ' + magneto.baseHealth + ' HP');
+        $('#' + wolverine.name + '-figure-caption').html(wolverine.name + ' ' + wolverine.baseHealth + ' HP');
+    });
+}
+
+//message saying you defeated character
+//message to choose new enemy
+function defenderLost() {
+    if (defeatedEnemy()) {
+        var message = player[1].name + ' defeated ' + enemy[1].name + '! Choose a new enemy';
+        $('#play-message').html(message);
+        $('.defender-figure').hide();
+        $('.defender-figure').removeClass('defender-figure');
+        if (allDefeated()) {
+            $('#play-message').html('Congratulations! You defeated all enemies.');
+            var resetButton = '<button type="button" class="btn btn-info" id="reset-button">Reset</button>';
+            $('#reset').html(resetButton);
+            reset();
+            $('.character-figure').show();
+        }
+    }
+}
+
+function allDefeated() {
+    var index = 0;
+    $('.enemy-figure:hidden').each(function() {
+        index++;
+    });
+    return index === 3;
+}
 
 function renderDom() {
     selectFighters();
