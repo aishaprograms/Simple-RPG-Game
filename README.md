@@ -1,5 +1,10 @@
 # Simple-RPG-Game
 
+Update (3/11/17): This is the first app I designed with jQuery. At that time, I handled much of the DOM manipulation with classes. If I were to redo this app, firstly, I would use React instead of jQuery. However, if I did use jQuery, I would manipulate the game based on the position of the character figure instead of its class. I did make some changes to clean up the display of the app so that the game works as expected and its use is straightforward. Additionally, I placed some instructions for those users that would like to understand how the game works.
+
+## Let's play!
+Sometimes the X-Men like to battle it out on the battlefield...
+
 ## Understand
 This is a RPG game which involves an attack and counter attack strategy.
 
