@@ -9,19 +9,51 @@
     <link href="https://fonts.googleapis.com/css?family=Audiowide|Bungee+Hairline" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="assets/javascript/game.js"></script>
 </head>
 
 <body>
     <!-- The game layout is divided into different sections. Figures represent the characters which are manipulated using Javascript and jQuery. -->
     <div class="container">
-        <header class="header">
-            <h1>X-Men RPG</h1>
+        <header class="header text-center">
+            <h1>Simple X-Men RPG</h1>
+            <p>You'll never play a game as simple as this ever.</p>
+            <!--Trigger modal-->
+            <a data-toggle="modal" data-target="#myModal">HOW TO PLAY</a>
         </header>
-        <div class="row" id="selected-player">
-            <h3 id="player-instruction">Choose your player</h3>
+        <hr />
+        <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Instructions</h4>
+            </div>
+            <div class="modal-body">
+                <p>When the game starts, the player will choose a character by clicking on the characters's picture. The player will fight as that character for the rest of the game. The player must then defeat all of the remaining fighters</p>
+                <p>The player chooses an opponent by clicking on an enemy's picture. Once the player selects an opponent, that enemy is moved to a `defender area`.</p>
+                <p>The player will now be able to click the `attack` button. Whenever the player clicks `attack`, their character damages the defender. The opponent will lose `HP` (health points). These points are displayed at the bottom of the defender's picture. The opponent character will instantly counter the attack. When that happens, the player's character will lose some of their `HP`. These points are shown at the bottom of the player character's picture.</p>
+                <p>The player will keep hitting the attack button in an effort to defeat their opponent. When the defender's HP is reduced to zero or below, the enemy is removed from the defender area. The player character can now choose a new opponent.</p>
+                <p>The player wins the game by defeating all enemy characters. The player loses the game the game if their character's HP falls to zero or below.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div class="row text-center" id="player-section">
+            <div class="col-sm-12 text-center" id="selected-player">
+                    <h3 id="player-instruction">Choose your player</h3>
+            </div>
+            <div class="col-sm-6 hidden text-center" id="defender">
+                <h3 id="defender-header">Defender</h3>
+            </div>
         </div>
-        <div class="row" id="characters">
+        <div class="row text-center" id="characters">
             <figure class="figure character-figure" id="Beast-figure">
                 <img src="assets/images/beast.jpeg" class="figure-img img-fluid rounded character" alt="Beast from X-Men" id="Beast">
                 <figcaption class="figure-caption" id="Beast-figure-caption">Beast 100 HP</figcaption>
@@ -39,20 +71,17 @@
                 <figcaption class="figure-caption" id="Wolverine-figure-caption">Wolverine 180 HP</figcaption>
             </figure>
         </div>
-        <div class="row" id="enemies">
+        <div class="row hidden text-center" id="enemies">
             <h3 id="enemy-header">Enemies available to attack</h3>
         </div>
-        <div class="row" id="fight-section">
-            <h3 id="fight-header">Fight Section</h3>
+        <div class="row hidden text-center" id="fight-section">
+            <h3 id="fight-header">Fight!</h3>
             <button type="button" class="btn btn-danger" id="attack-button">Attack</button>
         </div>
-        <div class="row" id="defender">
-            <h3 id="defender-header">Defender</h3>
-        </div>
-        <div class="row" id="game-play">
+        <div class="row hidden text-center" id="game-play">
             <p id="play-message"></p>
         </div>
-        <div class="row" id="reset"></div>
+        <div class="row hidden text-center" id="reset"></div>
     </div>
 </body>
 

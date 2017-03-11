@@ -1,6 +1,15 @@
+html, body { 
+    height:100vh;
+    margin:0;
+    padding:0;
+}
+div.container{ 
+    height:100vh; 
+}
+
 h1 {
     font-family: 'Audiowide', cursive;
-    font-size: 64px;
+    font-size: 48px;
 }
 
 h2,
@@ -11,8 +20,16 @@ h3 {
 figure {
     background: black;
     border: 2px yellow solid;
-    float: left;
     margin: 10px;
+    display: inline-block;
+}
+
+figure:hover{
+    cursor: pointer;
+}
+
+a:hover{
+    cursor: pointer;
 }
 
 img {
@@ -20,8 +37,7 @@ img {
 }
 
 .btn {
-    clear: both;
-    display: block;
+    display: inline-block;
     margin: 10px;
     max-width: 100px;
 }
